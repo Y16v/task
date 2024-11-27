@@ -7,8 +7,12 @@ datasources:
   datasources.yaml:
     apiVersion: 1
     datasources:
+    - name: Prometheus
+      type: prometheus
+      url: http://prometheus-operated.monitoring.svc.cluster.local:9090
+      isDefault: true
+      access: proxy
     - name: Loki
       type: loki
       url: http://loki.loki.svc.cluster.local:3100
       access: proxy
-      isDefault: true
