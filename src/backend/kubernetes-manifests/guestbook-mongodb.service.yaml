@@ -3,12 +3,16 @@ kind: Service
 metadata:
   name: python-guestbook-mongodb
   labels:
-    app: python-guestbook
+    app: python-guestbook-db
     tier: db
 spec:
   ports:
     - port: 27017
+      name: mongodb
       targetPort: 27017
+    - port: 9216
+      name: metrics
+      targetPort: metrics
   selector:
-    app: python-guestbook
+    app: python-guestbook-db
     tier: db

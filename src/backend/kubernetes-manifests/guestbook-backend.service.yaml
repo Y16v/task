@@ -3,13 +3,14 @@ kind: Service
 metadata:
   name: python-guestbook-backend
   labels:
-    app: python-guestbook
+    app: "python-guestbook-backend"
     tier: backend
 spec:
   type: ClusterIP
   selector:
-    app: python-guestbook
+    app: python-guestbook-backend
     tier: backend
   ports:
-  - port: 8080
+  - name: http-server
+    port: 8080
     targetPort: http-server

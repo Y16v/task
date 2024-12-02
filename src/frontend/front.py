@@ -6,13 +6,16 @@ import os
 import datetime
 import time
 from flask import Flask, render_template, redirect, url_for, request, jsonify
+from prometheus_flask_exporter import PrometheusMetrics
 import requests
 import dateutil.relativedelta
 
 app = Flask(__name__)
+metrics = PrometheusMetrics(app)
 app.config["BACKEND_URI"] = 'http://{}/messages'.format(os.environ.get('GUESTBOOK_API_ADDR'))
 
 @app.route('/')
+@metrics.counter('messages_get_requests', 'Number of message get requests')
 def main():
     """ Retrieve a list of messages from the backend, and use them to render the HTML template """
     response = requests.get(app.config["BACKEND_URI"], timeout=3)
@@ -20,6 +23,7 @@ def main():
     return render_template('home.html', messages=json_response)
 
 @app.route('/post', methods=['POST'])
+@metrics.counter('messages_post_requests', 'Number of message post requests send to backend')
 def post():
     """ Send the new message to the backend and redirect to the homepage """
     new_message = {'author': request.form['name'],

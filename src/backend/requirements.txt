@@ -3,3 +3,5 @@ Flask-PyMongo==2.3.0
 bleach==4.1.0
 ptvsd==4.3.2 # Required for debugging.
 Werkzeug==2.2.3
+prometheus_client==0.21.0
+prometheus_flask_exporter==0.23.1

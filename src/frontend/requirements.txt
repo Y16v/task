@@ -3,3 +3,5 @@ requests==2.27.1
 python-dateutil==2.8.2
 ptvsd==4.3.2 # Required for debugging.
 Werkzeug==2.2.3
+prometheus_client==0.21.0
+prometheus_flask_exporter==0.23.1

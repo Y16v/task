@@ -9,12 +9,12 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: python-guestbook
+      app: python-guestbook-frontend
       tier: frontend
   template:
     metadata:
       labels:
-        app: python-guestbook
+        app: python-guestbook-frontend
         tier: frontend
     spec:
       containers:

@@ -3,18 +3,18 @@ kind: Deployment
 metadata:
   name: python-guestbook-backend
   labels:
-    app: python-guestbook
+    app: python-guestbook-backend
     tier: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: python-guestbook
+      app: python-guestbook-backend
       tier: backend
   template:
     metadata:
       labels:
-        app: python-guestbook
+        app: python-guestbook-backend
         tier: backend
     spec:
       initContainers:
