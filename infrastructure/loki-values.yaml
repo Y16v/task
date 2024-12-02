@@ -12,6 +12,19 @@ loki:
       enabled: true
       size: 10Gi
   useTestSchema: true
+  tracing:
+    enabled: true
+  querier:
+    # Default is 4, if you have enough memory and CPU you can increase, reduce if OOMing
+    max_concurrent: 2
+
+chunksCache:
+  # default is 500MB, with limited memory keep this smaller
+  writebackSizeLimit: 10MB
+
+monitoring:
+  serviceMonitor:
+    enabled: true
 
 test:
   enabled: false
