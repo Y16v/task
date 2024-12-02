@@ -6,6 +6,12 @@ prometheus:
     retention: 1d
     replicas: 2
     replicaExternalLabelName: "__replica__"
+    serviceMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelectorNilUsesHelmValues: false
+    ruleSelectorNilUsesHelmValues: false
+    probeSelectorNilUsesHelmValues: false
+    scrapeConfigSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -13,3 +19,7 @@ prometheus:
           resources:
             requests:
               storage: 10Gi
+
+kubeEtcd:
+  service:
+    targetPort: 2381
