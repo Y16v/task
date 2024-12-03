@@ -1,0 +1,21 @@
+# 📋 TODO
+
+### Monitoring Stack 📊
+- [ ] Grafana Setup
+  - [ ] Setup dasbhoards
+- [ ] AlertManager Configuration
+  - [ ] Define alert templates
+
+### Logging Stack 📝
+- [ ] Loki Configuration
+  - [ ] Remove service_name label
+  - [ ] Configure retention policies
+- [ ] Fluent Bit Setup
+  - [ ] Set proper labels for logs indexation
+
+## Application Components 🚀
+
+- [ ] Kubernetes Manifests
+  - [ ] Enhance workloads security
+  - [ ] Define workloads resources
+  - [ ] Setup HPA
