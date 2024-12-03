@@ -20,9 +20,8 @@ config:
   outputs: |
     [OUTPUT]
         Name loki
-        Match kube.*
+        Match *
         Host loki.loki.svc.cluster.local
         Port 3100
-        Labels job=fluentbit
-        Label_Keys $kubernetes['namespace_name'],$kubernetes['pod_name'],$kubernetes['container_name']
+        Labels namespace=$kubernetes['namespace_name'], pod=$kubernetes['pod_name']
         Remove_Keys kubernetes,stream
