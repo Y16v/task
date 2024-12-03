@@ -1,0 +1,74 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: guestbook-alerts
+spec:
+  groups:
+  - name: backend
+    rules:
+    - alert: BackendDown
+      expr: up{service="python-guestbook-backend"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Backend service is down"
+        description: "Backend service has been down for more than 1 minute"
+    
+    - alert: HighBackendLatency
+      expr: rate(flask_http_request_duration_seconds_sum[5m]) / rate(flask_http_request_duration_seconds_count[5m]) > 1
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High backend latency"
+        description: "Backend latency is higher than 1s for 5 minutes"
+
+  - name: frontend
+    rules:
+    - alert: FrontendDown
+      expr: up{service="python-guestbook-frontend"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "Frontend service is down"
+        description: "Frontend service has been down for more than 1 minute"
+
+    - alert: High4xxErrors
+      expr: rate(http_requests_total{status=~"4.."}[5m]) / rate(http_requests_total[5m]) > 0.1
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High rate of 4xx errors"
+        description: "More than 10% of requests are resulting in 4xx errors"
+
+  - name: mongodb
+    rules:
+    - alert: MongoDBDown
+      expr: up{service="python-guestbook-db"} == 0
+      for: 1m
+      labels:
+        severity: critical
+      annotations:
+        summary: "MongoDB is down"
+        description: "MongoDB has been down for more than 1 minute"
+
+    - alert: HighMongoDBConnections
+      expr: mongodb_connections_current > mongodb_connections_available * 0.8
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "High MongoDB connections"
+        description: "MongoDB is using more than 80% of available connections"
+
+    - alert: MongoDBLowDiskSpace
+      expr: mongodb_disk_used / mongodb_disk_total > 0.85
+      for: 5m
+      labels:
+        severity: warning
+      annotations:
+        summary: "MongoDB disk space low"
+        description: "MongoDB disk usage is above 85%"

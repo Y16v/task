@@ -1,0 +1,37 @@
+################################################################################
+# WARNING: This MongoDB deployment is not suitable for production as the data is
+# not persistently stored and will go away every time the Pod restarts. Consider
+# using a Helm chart that provisions a StatefulSet instead of Deployment.
+################################################################################
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: python-guestbook-mongodb
+  labels:
+    app: python-guestbook-db
+    tier: db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: python-guestbook-db
+      tier: db
+  template:
+    metadata:
+      labels:
+        app: python-guestbook-db
+        tier: db
+    spec:
+      containers:
+        - name: mongo
+          image: mongo:4
+          ports:
+            - containerPort: 27017
+        - name: mongodb-exporter
+          image: percona/mongodb_exporter:0.42
+          ports:
+            - containerPort: 9216
+              name: metrics
+          env:
+            - name: MONGODB_URI
+              value: "mongodb://localhost:27017"

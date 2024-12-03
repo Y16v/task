@@ -1,0 +1,15 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: python-guestbook-backend
+  labels:
+    app: python-guestbook-backend
+spec:
+  selector:
+    matchLabels:
+      app: python-guestbook-backend
+      tier: backend
+  endpoints:
+  - port: http-server
+    path: /metrics
+    interval: 30s

@@ -1,0 +1,56 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: alert-routing
+  namespace: monitoring
+spec:
+  route:
+    # Default receiver if no routes match
+    receiver: 'slack'
+    groupBy: ['alertname']
+    groupWait: 30s
+    groupInterval: 5m
+    repeatInterval: 12h
+    # Route critical alerts to PagerDuty
+    routes:
+    - receiver: 'pagerduty'
+      matchers:
+      - name: severity
+        value: critical
+      groupWait: 30s
+      groupInterval: 5m
+      repeatInterval: 1h
+    
+  inhibitRules:
+  - equal:
+    - app
+    - tier
+    sourceMatch:  
+    - name: severity
+      matchType: "="
+      value: critical
+    targetMatch:
+    - name: severity
+      matchType: "="
+      value: warning
+
+  receivers:
+  - name: 'pagerduty'
+    pagerdutyConfigs:
+    - serviceKey:
+        name: pagerduty-config
+        key: serviceKey
+      severity: 'critical'
+      client: 'Prometheus'
+      clientURL: '{{ template "pagerduty.default.clientURL" . }}'
+      description: '{{ template "pagerduty.default.description" . }}'
+
+  - name: 'slack'
+    slackConfigs:
+    - apiURL:
+        name: slack-webhook
+        key: url
+      channel: '#alerts'
+      sendResolved: true
+      # TODO: Create template for alerts
+      # text: | 
