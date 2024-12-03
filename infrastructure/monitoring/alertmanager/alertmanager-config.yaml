@@ -22,13 +22,17 @@ spec:
       repeatInterval: 1h
     
   inhibitRules:
-  - sourceMatchers:
-    - severity="critical"
-    targetMatchers:
-    - severity="warning"
-    equal:
+  - equal:
     - app
     - tier
+    sourceMatch:  
+    - name: severity
+      matchType: "="
+      value: critical
+    targetMatch:
+    - name: severity
+      matchType: "="
+      value: warning
 
   receivers:
   - name: 'pagerduty'
@@ -48,3 +52,5 @@ spec:
         key: url
       channel: '#alerts'
       sendResolved: true
+      # TODO: Create template for alerts
+      # text: | 
